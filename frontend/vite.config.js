@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+    proxy: {
+      "/api": "https://7qw7zl-5000.csb.app",
+    },
   },
 });

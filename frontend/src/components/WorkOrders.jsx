@@ -28,7 +28,7 @@ const WorkOrders = ({ onSelectWorkOrder }) => {
 
   const fetchWorkOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/workorders");
+      const response = await axios.get("/api/workorders");
       setWorkOrders(response.data);
     } catch (error) {
       console.error("Error fetching work orders:", error);
@@ -43,14 +43,11 @@ const WorkOrders = ({ onSelectWorkOrder }) => {
   const handleSave = async () => {
     if (currentWorkOrder.id) {
       await axios.put(
-        `http://localhost:5000/api/workorders/${currentWorkOrder.id}`,
+        `/api/workorders/${currentWorkOrder.id}`,
         currentWorkOrder,
       );
     } else {
-      const response = await axios.post(
-        "http://localhost:5000/api/workorders",
-        currentWorkOrder,
-      );
+      const response = await axios.post("/api/workorders", currentWorkOrder);
       setWorkOrders([...workOrders, response.data]);
     }
     onClose();

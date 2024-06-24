@@ -31,7 +31,7 @@ const Activities = ({ workOrder }) => {
   const fetchActivities = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/activities/workorder/${workOrder.id}`,
+        `/api/activities/workorder/${workOrder.id}`,
       );
       setActivities(response.data);
     } catch (error) {
@@ -50,15 +50,9 @@ const Activities = ({ workOrder }) => {
 
   const handleSave = async () => {
     if (currentActivity.id) {
-      await axios.put(
-        `http://localhost:5000/api/activities/${currentActivity.id}`,
-        currentActivity,
-      );
+      await axios.put(`/api/activities/${currentActivity.id}`, currentActivity);
     } else {
-      const response = await axios.post(
-        "http://localhost:5000/api/activities",
-        currentActivity,
-      );
+      const response = await axios.post("/api/activities", currentActivity);
       setActivities([...activities, response.data]);
     }
     onClose();

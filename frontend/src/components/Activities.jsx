@@ -31,16 +31,11 @@ const Activities = ({ workOrder }) => {
   const fetchActivities = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/workorders/${workOrder.id}/activities`,
+        `http://localhost:5000/api/activities/workorder/${workOrder.id}`,
       );
-      if (Array.isArray(response.data)) {
-        setActivities(response.data);
-      } else {
-        setActivities([]);
-      }
+      setActivities(response.data);
     } catch (error) {
       console.error("Error fetching activities:", error);
-      setActivities([]);
     }
   };
 
@@ -83,22 +78,21 @@ const Activities = ({ workOrder }) => {
             Create Activity
           </Button>
           <VStack spacing={4} align="stretch" mt={4}>
-            {Array.isArray(activities) &&
-              activities.map((activity) => (
-                <Box key={activity.id} className="card">
-                  <Text fontSize="xl" fontWeight="bold">
-                    {activity.title}
-                  </Text>
-                  <Text>{activity.description}</Text>
-                  <Button
-                    size="sm"
-                    colorScheme="blue"
-                    onClick={() => handleEdit(activity)}
-                  >
-                    Edit
-                  </Button>
-                </Box>
-              ))}
+            {activities.map((activity) => (
+              <Box key={activity.id} className="card">
+                <Text fontSize="xl" fontWeight="bold">
+                  {activity.title}
+                </Text>
+                <Text>{activity.description}</Text>
+                <Button
+                  size="sm"
+                  colorScheme="blue"
+                  onClick={() => handleEdit(activity)}
+                >
+                  Edit
+                </Button>
+              </Box>
+            ))}
           </VStack>
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />

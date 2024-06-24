@@ -7,7 +7,6 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Button,
 } from "@chakra-ui/react";
 import WorkOrders from "./components/WorkOrders";
 import Activities from "./components/Activities";

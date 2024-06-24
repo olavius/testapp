@@ -29,14 +29,9 @@ const WorkOrders = ({ onSelectWorkOrder }) => {
   const fetchWorkOrders = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/workorders");
-      if (Array.isArray(response.data)) {
-        setWorkOrders(response.data);
-      } else {
-        setWorkOrders([]);
-      }
+      setWorkOrders(response.data);
     } catch (error) {
       console.error("Error fetching work orders:", error);
-      setWorkOrders([]);
     }
   };
 
@@ -46,24 +41,20 @@ const WorkOrders = ({ onSelectWorkOrder }) => {
   };
 
   const handleSave = async () => {
-    try {
-      if (currentWorkOrder.id) {
-        await axios.put(
-          `http://localhost:5000/api/workorders/${currentWorkOrder.id}`,
-          currentWorkOrder,
-        );
-      } else {
-        const response = await axios.post(
-          "http://localhost:5000/api/workorders",
-          currentWorkOrder,
-        );
-        setWorkOrders([...workOrders, response.data]);
-      }
-      onClose();
-      fetchWorkOrders();
-    } catch (error) {
-      console.error("Error saving work order:", error);
+    if (currentWorkOrder.id) {
+      await axios.put(
+        `http://localhost:5000/api/workorders/${currentWorkOrder.id}`,
+        currentWorkOrder,
+      );
+    } else {
+      const response = await axios.post(
+        "http://localhost:5000/api/workorders",
+        currentWorkOrder,
+      );
+      setWorkOrders([...workOrders, response.data]);
     }
+    onClose();
+    fetchWorkOrders();
   };
 
   const handleEdit = (workOrder) => {
@@ -77,26 +68,25 @@ const WorkOrders = ({ onSelectWorkOrder }) => {
         Create Work Order
       </Button>
       <VStack spacing={4} align="stretch" mt={4}>
-        {Array.isArray(workOrders) &&
-          workOrders.map((workOrder) => (
-            <Box
-              key={workOrder.id}
-              className="card"
-              onClick={() => onSelectWorkOrder(workOrder)}
+        {workOrders.map((workOrder) => (
+          <Box
+            key={workOrder.id}
+            className="card"
+            onClick={() => onSelectWorkOrder(workOrder)}
+          >
+            <Text fontSize="xl" fontWeight="bold">
+              {workOrder.title}
+            </Text>
+            <Text>{workOrder.description}</Text>
+            <Button
+              size="sm"
+              colorScheme="blue"
+              onClick={() => handleEdit(workOrder)}
             >
-              <Text fontSize="xl" fontWeight="bold">
-                {workOrder.title}
-              </Text>
-              <Text>{workOrder.description}</Text>
-              <Button
-                size="sm"
-                colorScheme="blue"
-                onClick={() => handleEdit(workOrder)}
-              >
-                Edit
-              </Button>
-            </Box>
-          ))}
+              Edit
+            </Button>
+          </Box>
+        ))}
       </VStack>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
